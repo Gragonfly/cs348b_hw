@@ -10,7 +10,7 @@
 
 先上一个自己的hw1笔记。
 
-![avatar](/pic/笔记.png)
+![avatar](pic/笔记.png)
 
 hw1感觉更像是熟悉作业（调参作业），有点像Games的作业0（俗称配环境作业），做起来比较简单，也是帮助我们认识pbr的代码范式和体系。废话不多说，直接看第一个render。
 
@@ -22,7 +22,7 @@ hw1感觉更像是熟悉作业（调参作业），有点像Games的作业0（�
 
 render1按它的说法是改变点光源的位置，使人物有一个自下向上的光照。它给的要求效果如下
 
-![avatar](/pic/%E7%A4%BA%E4%BE%8B1.jpeg)
+![avatar](pic/%E7%A4%BA%E4%BE%8B1.jpeg)
 
 只要调整点光源（spotlight）的位置就可以了，我们可以找到代码中关于点光源的声明和定义
 
@@ -32,7 +32,7 @@ LightSource "spot" "color I" [10 10 10] "point from" [-1 2 5] "point to" [0 0 0]
 
 我们知道，spot说明它是个点光源，点光源是一个锥体，那么其中的point from和point to描述的就是锥体的高的方向，也就是中心光束的方向，float coneangle就是锥体的顶角，描述锥体的张开程度，color I描述的是光的强度和颜色，采用RGB，以上是我的理解，我们可以看一下官方给的解释。
 
-![avatar](/pic/spotlight.png)
+![avatar](pic/spotlight.png)
 
 通过官方的解释，我们可以看到其实还可以调整的参数还有一个，它的名字是float conedeltaangle，含义是光线在边缘开始衰减的角度，现实中的点光源也是，它在中心位置的光线能量是相对比较多的，而在两边周围则开始衰减，这个参数还是挺合理的。但是可能是考虑到对新手友好，所以没有在示例中给出来。
 
@@ -44,7 +44,7 @@ LightSource "spot" "color I" [50 50 50] "point from" [0 -4.7 4.7] "point to" [0 
 
 效果图如下
 
-![avatar](/pic/render1.png)
+![avatar](pic/render1.png)
 
 可以看到还是有差距的，主要是高光（highlight）的位置不对，我的高光可能没打到下巴上，而是打到了下巴的下方，这一点我是根据脖子的光影推断的，因为脖子上的影子在参考图中是有的，而我的没有，说明脖子在我的参数下是完全被照亮的，而在参考图中是有阴影的，这就说明我的高光位置应该偏下方了，因为只有下方的高光才能照亮脖子，但是我最终没调出一个很好的效果，作业嘛，大致能体会到出题者的精神就可以了，没必要纠结效果要和参考图一致。
 
@@ -64,7 +64,7 @@ Sampler "halton" "integer pixelsamples" [4]
 
 render2的要求是一个侧面光，而且光源被换成了disk，也就是圆盘，可以看到侧面光非常亮，直接照白了人物的半边脸，但是另外半边就是完全黑暗了。参考图如下
 
-![avatar](/pic/%E7%A4%BA%E4%BE%8B2.jpeg)
+![avatar](pic/%E7%A4%BA%E4%BE%8B2.jpeg)
 
 面光源和点光源有个最大的不同就是光源的几何形状，pbrt支持的光源形状比较有限，大致分为点光源，球光源，圆柱光源，面光源（也就是圆盘光源disk），然后就没了，下面是面光源的参数代码
 
@@ -83,7 +83,7 @@ AttributeEnd
 
 首先面光源的标志是“area”，color L的参数仍旧表示光强和光的颜色，后面的CoordSysTransform "camera"的意思是使用相机的坐标系，有什么好处呢，为什么这里不继续使用之前的世界坐标系。我在pbr的书上翻到的解释如下
 
-![avatar](/pic/%E5%9D%90%E6%A0%87%E7%B3%BB.png)
+![avatar](pic/%E5%9D%90%E6%A0%87%E7%B3%BB.png)
 
 这段话的大意是说，制作CTM的命名副本可能是有用的，以便以后可以引用它。例如，要将光放置在相机的位置，首先将转换应用于相机坐标系是有用的，因为这样光就可以放置在原点（0，0，0）。这样，如果相机位置发生变化，场景被重新渲染，光线将随它移动。pbrtCoordinateSystem()函数将当前TransformSet复制到命名的CoordinateSystems关联数组中，pbrtCoordSysTransform()加载一组命名的CTM。最关键的是当相机位置发生变化的时候，光线的位置也会随着相机的变化而变化，这是非常重要的，因为比如我们要渲染一组类似VR的浏览图的时候，就需要这一点，如果每一张图都要我们去改变光照的位置，那会非常麻烦。
 
@@ -106,7 +106,7 @@ AttributeEnd
 
 效果图如下
 
-![avatar](/pic/render2.png)
+![avatar](pic/render2.png)
 
 图上有很多噪声，其实可以考虑进一步提高采样数量，以此来降低噪声，但是我做的时候觉得重要的是光线的位置和强度，就没调整这个采样数量的参数。
 
@@ -134,11 +134,11 @@ AttributeEnd
 ```
 效果图如下（加上补偿光的）
 
-![avatar](/pic/render3_fill.png)
+![avatar](pic/render3_fill.png)
 
 （没有补偿光的）
 
-![avatar](/pic/render3_nofill.png)
+![avatar](pic/render3_nofill.png)
 
 <br/>
 
@@ -168,35 +168,35 @@ render4的要求是四个光源，而且相机的位置也被调整了，这四�
 
 main_light
 
-![avatar](/pic/render4_main.png)
+![avatar](pic/render4_main.png)
 
 fill_light
 
-![avatar](/pic/render4_fill.png)
+![avatar](pic/render4_fill.png)
 
 accent_light
 
-![avatar](/pic/render4_accent.png)
+![avatar](pic/render4_accent.png)
 
 background light
 
-![avatar](/pic/render4_background.png)
+![avatar](pic/render4_background.png)
 
 合在一起的效果图如下
 
-![avatar](/pic/render4_full.png)
+![avatar](pic/render4_full.png)
 
 参考图如下
 
-![avatar](/pic/render4_full_ask.jpeg)
+![avatar](pic/render4_full_ask.jpeg)
 
 可以看到脖子那边的效果差比较多，问题应该是出在fill_light那边，fill_light的参考图如下
 
-![avatar](/pic/render4_fill_ask.jpeg)
+![avatar](pic/render4_fill_ask.jpeg)
 
 而我的fill_light是这样的
 
-![avatar](/pic/render4_fill.png)
+![avatar](pic/render4_fill.png)
 
 感觉我的fill_light的光源位置可能不太对，他的光源在侧面，而我的fill_light光源在正面。
 
@@ -208,9 +208,9 @@ background light
 
 这两个render主要是观赏性的，没什么调整需要做，直接放注释渲染就可以。以下是我的渲染结果。
 
-![avatar](/pic/render5.png)
+![avatar](pic/render5.png)
 
-![avatar](/pic/render6.png)
+![avatar](pic/render6.png)
 
 render5是说使用HDR环境光贴图，这个贴图可以非常方便地使我们不必再去一个个地调整光源的位置，render6是说模型应该有纹理和材质贴图，这样才会显得真实，直接用它提供的就可以了。
 
